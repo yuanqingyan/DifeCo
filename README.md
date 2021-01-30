@@ -4,15 +4,6 @@
 Gene mutation resulting in functional dysregulation is the direct cause of most genetic diseases. In many diseases, some gene mutations are tend to occur together and compensate the biological functions with each other. While for some other mutations, their functions are redundant and tend to mutually exclude with each other. This phenomenon is commonly seen in cancer biology. For example, in IDH-WT GBM, TP53 and RB1 mutations often cooccurring, while CDKN2A/B loss is mutually exclusive with TP53 mutation. Due to the disease heterogeneousness, the pattern of gene mutation cooccurrence/mutual exclusion could vary, such as patients with long vs short survival, or patients between different subtypes. The differential cooccurrence/mutual exclusion of gene mutations could be critical for disease treatment. DifeCo is an R package to evaluate the differential occurrence/mutual exclusion of gene mutation. It fits a Firth's bias-reduced logistic regression model between pairwise genes plus the additional group variable. An interaction term of independent predictors is introduced and its significance is evaluated. After the multiplicity adjustment, the pairs of gene are regarded to be statistically significant if the adjusted p value of interaction term is less than the designed cutoff. For the model with interaction term failing to reach significance, the additive model without interaction term is fit to evaluate the cooccurrence/mutual exclusion in the entire dataset. In addition to test the differential cooccurrence/mutual exclusion, DifeCo package can also be used to evaluate and visualize pairwise gene cooccurrence/mutual exclusion in two datasets (Separate mode) or single one dataset (Single mode). Which model to be used purely depends on the hypothesis as well as the nature of the data.
  
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.width=8, 
-  fig.height=7
-)
-```
-
 ## Installation
 Installing DifeCo from GitHub
 ```{r, eval=FALSE}
