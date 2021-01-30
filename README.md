@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 Installing DifeCo from GitHub
 ```{r, eval=FALSE}
 library(devtools)
-install_github("yuanqing_yan/DifeCo")
+install_github("yuanqingyan/DifeCo")
 ```
 ## Load data
 Load IDH-WT gbm data. Here we focus on UT cohort and assume the patients can be splitted into two groups based on the status of PTEN. Here we have PTEN-WT and PTEN-Alt. This example is to illustrate how to use package with DC mode. 
