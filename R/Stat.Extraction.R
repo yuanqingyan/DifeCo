@@ -14,7 +14,7 @@
 #' cohort<-gbm_dat$cohort;unique(cohort)
 #' dat<-gbm_dat[,-1]
 #'
-#' Result_Separate<-DC.CO_Evaluation(mutation_data=dat,
+#' Result_Separate<-DC.CO_Evaluation(input_data=dat,
 #'                                   group=cohort,
 #'                                   which_group_to_be_one="UT",
 #'                                   mode="Separate",

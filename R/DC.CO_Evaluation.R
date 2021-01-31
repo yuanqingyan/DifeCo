@@ -1,8 +1,8 @@
 #' @title DC.CO_Evaluation
 #'
-#' @description Evaluate the cooccurrence or differential cooccurrence of the gene mutation data
+#' @description Evaluate the cooccurrence/mutual exclusion or differential cooccurrence/mutual exclusion of the gene mutation data
 #'
-#' @param mutation_data Dataframe or matrix of gene mutation data. Should be a binary data with 0 as the wild type while 1 for mutation.
+#' @param input_data Dataframe or matrix of genomic alteration data (for example: gene mutation data). Should be a binary data with 0 as the wild type while 1 for altered/mutation.
 #' @param mode Which mode to be used. Three modes are included: "DC"(evaluate the significance of differential cooccurrence between two different groups),"Separate"(evaluate the pairwise cooccurrence in each group separately),"Single"(evalute the pairwise cooccurrence for the entire dataset).
 #' @param group Binary data.  Applys to "Separate" or "DC" mode.
 #' @param which_group_to_be_one One category of the group parameter. Applys to "Separate" or "DC" mode. For "DC" mode, this category is modeled.
@@ -19,13 +19,13 @@
 #' dat<-gbm_dat[,-1]
 #'
 #' #Evaluate pairwise cooccurrence of genomic alteration of the entire gbm_dat data.
-#' Result_Single<-DC.CO_Evaluation(mutation_data=dat,
+#' Result_Single<-DC.CO_Evaluation(input_data=dat,
 #'                                 mode="Single",
 #'                                 adjust.method="BH",
 #'                                 FDRCutoff=0.05)
 #'
 #' #Evaluate pairwise cooccurrence for the two cohorts separately.
-#' Result_Separate<-DC.CO_Evaluation(mutation_data=dat,
+#' Result_Separate<-DC.CO_Evaluation(input_data=dat,
 #'                                   group=cohort,
 #'                                   which_group_to_be_one="UT",
 #'                                   mode="Separate",
@@ -36,7 +36,7 @@
 #' UT_dat<-gbm_dat[gbm_dat$cohort=="UT",-1]
 #' PTEN_grp<-UT_dat$PTEN;table(PTEN_grp)
 #' dat2<-subset(UT_dat,select=-PTEN)
-#' Result_DC<-DC.CO_Evaluation(mutation_data=dat2,
+#' Result_DC<-DC.CO_Evaluation(input_data=dat2,
 #'                            group=PTEN_grp,
 #'                            which_group_to_be_one=1,
 #'                            mode="DC",
@@ -45,14 +45,14 @@
 
 
 
-DC.CO_Evaluation<-function(mutation_data=mutation_data,
+DC.CO_Evaluation<-function(input_data=input_data,
                            group=NULL,
                            mode="DC",
                            which_group_to_be_one=NULL,
                            adjust.method="BH",
                            FDRCutoff=0.05){
-  if(!(is.data.frame(mutation_data) | is.matrix(mutation_data))){
-    stop("Mutation data should be in a data frame or matrix!")
+  if(!(is.data.frame(input_data) | is.matrix(input_data))){
+    stop("Input data should be in a data frame or matrix!")
   }
   if(!(mode %in% c("DC","Separate","Single"))){
     stop("mode should be one of 'DC','Separate' or 'Single'!")
@@ -73,10 +73,10 @@ DC.CO_Evaluation<-function(mutation_data=mutation_data,
   if(!is.numeric(FDRCutoff)){
     stop("FDRCutoff should be numeric data and ranges from 0~1!")
   }
-  mutation_data<-mutation_data[,!apply(mutation_data,2,function(x) all(is.na(x)))]
+  input_data<-input_data[,!apply(input_data,2,function(x) all(is.na(x)))]
   if(mode=="DC"){
     #### calculate inter and main P value OR value
-    P_OR.list<-calculate_sig_interaction(mat=mutation_data,
+    P_OR.list<-calculate_sig_interaction(mat=input_data,
                                          group=group,
                                          which_group_to_be_one=which_group_to_be_one,
                                          adjust.method=adjust.method)
@@ -87,7 +87,7 @@ DC.CO_Evaluation<-function(mutation_data=mutation_data,
   }
   if(mode=="Separate"){
     #### calculate single group: P value OR value
-    P_OR.list.sep.group<-make_P_OR_SeqGroup(mat=mutation_data,
+    P_OR.list.sep.group<-make_P_OR_SeqGroup(mat=input_data,
                                             group=group,
                                             which_group_to_be_one=which_group_to_be_one,
                                             adjust.method=adjust.method)
@@ -98,7 +98,7 @@ DC.CO_Evaluation<-function(mutation_data=mutation_data,
   }
   if(mode=="Single"){
     #### calculate single group: P value OR value
-    P_OR.list.single<-make_P_OR_Single(mat=mutation_data,adjust.method=adjust.method)
+    P_OR.list.single<-make_P_OR_Single(mat=input_data,adjust.method=adjust.method)
     ##stpe 2## p value adjustment
     list.P.adj<-adjust_Single_P(inputList=P_OR.list.single,
                                 FDRCutoff=FDRCutoff,

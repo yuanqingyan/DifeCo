@@ -1,11 +1,11 @@
 Package: DifeCo
 Type: Package
-Title: Differential Cooccurrence of Binary Gene Mutation Data
+Title: Differential Cooccurrence or Mutual Exclusion of Binary Genomic Alteration Data
 Version: 0.1.0
 Date: 2021-01-26
 Author: Yuanqing Yan
 Maintainer: Yuanqing Yan <yuanqing.yan@uth.tmc.edu>
-Description: Evaluate the differential cooccurrence of gene mutation data between two different conditions. 
+Description: Evaluate the differential cooccurrence or mutual exclusion of binary genomic alteration data between two different conditions. 
 Dependeds: R(>=4.0.2),logistf,plotrix,devtools,roxygens,knitr
 License: GPL-2
 Encoding: UTF-8
