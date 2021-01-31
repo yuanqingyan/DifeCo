@@ -7,7 +7,7 @@
 #'
 #'
 #'
-#' @return A data frame with log odds ratio, raw p value, fasle discovery rate and significance
+#' @return A list with multiple objects. The statistics of the result can be obtained from the element with the name of "Stat". The element of "Stat" is a data frame with log odds ratio(logOR), raw p value(RawP), fasle discovery rate(FDR) and significance. LogOR>0 implies the genes are in an cooccurrence pattern, while <0 for mutual exclusion.
 #' @export
 #' @examples
 #' data(gbm_dat)
