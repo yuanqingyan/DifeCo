@@ -19,6 +19,11 @@ extract_stat_single<-function(obj=obj){
 
 
 extract_stat_DC<-function(obj=Result_DC){
+  uniGroup<-unique(obj$group)
+  which_group_to_be_one<-obj$which_group_to_be_one
+  name_grp0<-uniGroup[!uniGroup==which_group_to_be_one]
+  name_grp1<-which_group_to_be_one
+
   FDR_cutoff<-obj$FDRCutoff
   temp<-get_coordList(obj=obj,n=7)
   pval_DE<-temp$pvalue_DE
@@ -45,7 +50,6 @@ extract_stat_DC<-function(obj=Result_DC){
                   LogOR_AdjustGroup=OR_CO[,3],
                   RawP_AdjustGroup=OR_CO[,3],
                   FDR_AdjustGroup=FDR_CO[,3])
-
   row.names(out)<-1:nrow(out)
 
   for(i in 1:nrow(out)){
@@ -60,6 +64,7 @@ extract_stat_DC<-function(obj=Result_DC){
       out$LogOR_AdjustGroup[i]<-out$RawP_AdjustGroup[i]<-out$FDR_AdjustGroup[i]<-NA
     }
   }
+  colnames(out)[3:4]<-sprintf("LogOR_WithinGroup:%s",c(name_grp0,name_grp1))
   out$Sig.In.DC<-ifelse(!is.na(out$FDR_Test.DC),"Yes","No")
   out$Sig.In.CO<-ifelse(!is.na(out$FDR_AdjustGroup) & out$FDR_AdjustGroup<FDR_cutoff,"Yes","No")
 
@@ -103,9 +108,26 @@ extract_stat_Sep<-function(obj=Result_Separate,WhichGrp_adjP.Separate=NULL){
   out<-data.frame(Gene1=rowN_temp[Row_index],
                   Gene2=colN_temp[Col_index],
                   coord_0[,c(3:6,9)],coord_1[,c(3:6,9)])
-  colnames(out)[3:12]<-c(sprintf("%s.%s",c("LogOR","Raw.P","FDR.Each.Grp","FDR.All","Sig.In"),name_grp0),
-                         sprintf("%s.%s",c("LogOR","Raw.P","FDR.Each.Grp","FDR.All","Sig.In"),name_grp1))
+  colnames(out)[3:12]<-c(sprintf("%s.%s",c("LogOR","Raw.P","FDR.Within.Grp","FDR.All","Sig.In"),name_grp0),
+                         sprintf("%s.%s",c("LogOR","Raw.P","FDR.Within.Grp","FDR.All","Sig.In"),name_grp1))
   row.names(out)<-1:nrow(out)
+
+  ###########################
+  if(is.null(WhichGrp_adjP.Separate)){
+    out<-out[,c(1:4,6:9,11:12)]
+  }else if(WhichGrp_adjP.Separate=="All"){
+    out<-out[,c(1:4,6:9,11:12)]
+  }else if(WhichGrp_adjP.Separate=="None"){
+    out<-out[,c(1:4,7:9,12)]
+  }else if (WhichGrp_adjP.Separate=="Each"){
+    out<-out[,c(1:5,7:10,12)]
+  }else if(WhichGrp_adjP.Separate==name_grp1){
+    out<-out[,c(1:4,7:10,12)]
+  }else if(WhichGrp_adjP.Separate==name_grp0){
+    out<-out[,c(1:5,7:9,12)]
+  }else{
+      stop("The name to specify WhichGrp_adjP.Separate is not correct!")
+    }
 
   return(out)
 }
@@ -665,7 +687,7 @@ check_Sig_SepGrp<-function(dataIn=obj_coord$CoordList,
     list_signSig$P_OR_group1$Sig<-ifelse(list_signSig$P_OR_group1$rawP<FDRCutoff,"Yes","No")
     list_signSig$P_OR_group0$Sig<-ifelse(list_signSig$P_OR_group0$adjP_singleGroup<FDRCutoff,"Yes","No")
   }else{
-    stop("The group name for P value adjustment in separate group analysis is not correct!")
+    stop("The name to specify WhichGrp_adjP.Separate is not correct!")
   }
   return(list_signSig)
 }

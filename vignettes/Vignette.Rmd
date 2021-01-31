@@ -54,7 +54,7 @@ The gene pairs with significantly differential cooccurrence/mutual exclusion can
 ```{r, eval=TRUE}
   sta_DC<-Stat.Extraction(obj=Result_DC)
   sig_DC<-sta_DC$Stat
-#Extract the gene pairs with significant differential cooccurrence/mutual exclusion
+#Extract the gene pairs with significant differential cooccurrence/mutual exclusion. LogOR>0 implies cooccurrence while <0 for mutual exclusion
   sig_DC[sig_DC$Sig.In.DC=="Yes",]
 #Extract the gene pairs with significant cooccurrence/mutual exclusion in UT chort dataset
   nrow(sig_DC[sig_DC$Sig.In.CO=="Yes",])
