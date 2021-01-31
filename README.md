@@ -26,7 +26,7 @@ MutDat_WoPTEN<-subset(MutDat_UT,select=-PTEN);head(MutDat_WoPTEN[,1:5])
 ## DC mode
 First step is to evaluate the differential cooccurrence/mutual exclusion of genomic alterations between the patients with wild type PTEN (PTEN-WT) and PTEN function altered (PTEN-Alt). We set up the FDR cutoff equal to 0.1. 
 ```{r, eval=TRUE}
-  Result_DC<-DC.CO_Evaluation(mutation_data=MutDat_WoPTEN,
+  Result_DC<-DC.CO_Evaluation(input_data=MutDat_WoPTEN,
                               group=PTEN,
                               which_group_to_be_one=1,
                               mode="DC",
@@ -54,7 +54,7 @@ Significance of cooccurrence/mutual exclusion is evaluated in each sub dataset i
 ```{r, eval=TRUE}
   Cohort=gbm_dat$cohort
   MutDat<-gbm_dat[,-1]
-  Result_Sep<-DC.CO_Evaluation(mutation_data=MutDat,
+  Result_Sep<-DC.CO_Evaluation(input_data=MutDat,
                                group=Cohort,
                                which_group_to_be_one='UT',
                                mode="Separate",
@@ -82,7 +82,7 @@ Assuming data from UT and TCGA cohort can be simply combined into one dataset, w
 ```{r, eval=TRUE}
  #Remove "cohort" column
   CombineDat<-gbm_dat[,-1]
-  Result_Sin<-DC.CO_Evaluation(mutation_data=CombineDat,
+  Result_Sin<-DC.CO_Evaluation(input_data=CombineDat,
                                mode="Single",
                                adjust.method="BH",
                                FDRCutoff=0.05)
