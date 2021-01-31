@@ -5,7 +5,7 @@
 \title{DC.CO_Evaluation}
 \usage{
 DC.CO_Evaluation(
-  mutation_data = mutation_data,
+  input_data = input_data,
   group = NULL,
   mode = "DC",
   which_group_to_be_one = NULL,
@@ -14,7 +14,7 @@ DC.CO_Evaluation(
 )
 }
 \arguments{
-\item{mutation_data}{Dataframe or matrix of gene mutation data. Should be a binary data with 0 as the wild type while 1 for mutation.}
+\item{input_data}{Dataframe or matrix of genomic alteration data (for example: gene mutation data). Should be a binary data with 0 as the wild type while 1 for altered/mutation.}
 
 \item{group}{Binary data.  Applys to "Separate" or "DC" mode.}
 
@@ -30,7 +30,7 @@ DC.CO_Evaluation(
 A list with odds ratio, raw p value and fasle discovery rate
 }
 \description{
-Evaluate the cooccurrence or differential cooccurrence of the gene mutation data
+Evaluate the cooccurrence/mutual exclusion or differential cooccurrence/mutual exclusion of the gene mutation data
 }
 \examples{
 data(gbm_dat)
@@ -38,13 +38,13 @@ cohort<-gbm_dat$cohort;unique(cohort)
 dat<-gbm_dat[,-1]
 
 #Evaluate pairwise cooccurrence of genomic alteration of the entire gbm_dat data.
-Result_Single<-DC.CO_Evaluation(mutation_data=dat,
+Result_Single<-DC.CO_Evaluation(input_data=dat,
                                 mode="Single",
                                 adjust.method="BH",
                                 FDRCutoff=0.05)
 
 #Evaluate pairwise cooccurrence for the two cohorts separately.
-Result_Separate<-DC.CO_Evaluation(mutation_data=dat,
+Result_Separate<-DC.CO_Evaluation(input_data=dat,
                                   group=cohort,
                                   which_group_to_be_one="UT",
                                   mode="Separate",
@@ -55,7 +55,7 @@ Result_Separate<-DC.CO_Evaluation(mutation_data=dat,
 UT_dat<-gbm_dat[gbm_dat$cohort=="UT",-1]
 PTEN_grp<-UT_dat$PTEN;table(PTEN_grp)
 dat2<-subset(UT_dat,select=-PTEN)
-Result_DC<-DC.CO_Evaluation(mutation_data=dat2,
+Result_DC<-DC.CO_Evaluation(input_data=dat2,
                            group=PTEN_grp,
                            which_group_to_be_one=1,
                            mode="DC",
