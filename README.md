@@ -1,7 +1,7 @@
-# DifeCo: Differential Cooccurrence or Mutual Exclusion of Binary Genomic Alteration Data
+# DifeCo: Differential Cooccurrence or Mutual exclusivity of Binary Genomic Alteration Data
 
 ## Description
-Gene mutation resulting in functional dysregulation is the direct cause of most genetic diseases. In many diseases, some gene mutations are tend to occur together and compensate the biological functions with each other. While for some other mutations, their functions are redundant and tend to mutually exclude with each other. This phenomenon is commonly seen in cancer biology. For example, in IDH-WT GBM, TP53 and RB1 mutations often cooccurring, while CDKN2A/B loss is mutually exclusive with TP53 mutation. Due to the disease heterogeneousness, the pattern of gene mutation cooccurrence/mutual exclusion could vary, such as patients with long vs short survival, or patients between different subtypes. The differential cooccurrence/mutual exclusion of gene mutations could be critical for disease treatment. DifeCo is an R package to evaluate the differential occurrence/mutual exclusion of gene mutation. It fits a Firth's bias-reduced logistic regression model between pairwise genes plus the additional group variable. An interaction term of independent predictors is introduced and its significance is evaluated. After the multiplicity adjustment, the pairs of gene are regarded to be statistically significant if the adjusted p value of interaction term is less than the designed cutoff. For the model with interaction term failing to reach significance, the additive model without interaction term is fit to evaluate the cooccurrence/mutual exclusion in the entire dataset. In addition to test the differential cooccurrence/mutual exclusion, DifeCo package can also be used to evaluate and visualize pairwise gene cooccurrence/mutual exclusion in two datasets (Separate mode) or single one dataset (Single mode). Which model to be used purely depends on the hypothesis as well as the nature of the data.
+Gene mutation resulting in functional dysregulation is the direct cause of most genetic diseases. In many diseases, some gene mutations are tend to occur together and compensate the biological functions with each other. While for some other mutations, their functions are redundant and tend to mutually exclude with each other. This phenomenon is commonly seen in cancer biology. For example, in IDH-WT GBM, TP53 and RB1 mutations often cooccurring, while CDKN2A/B loss is mutually exclusive with TP53 mutation. Due to the disease heterogeneousness, the pattern of gene mutation cooccurrence/mutual exclusivity could vary, such as patients with long vs short survival, or patients between different subtypes. The differential cooccurrence/mutual exclusivity of gene mutations could be critical for disease treatment. DifeCo is an R package to evaluate the differential occurrence/mutual exclusivity of gene mutation. It fits a Firth's bias-reduced logistic regression model between pairwise genes plus the additional group variable. An interaction term of independent predictors is introduced and its significance is evaluated. After the multiplicity adjustment, the pairs of gene are regarded to be statistically significant if the adjusted p value of interaction term is less than the designed cutoff. For the model with interaction term failing to reach significance, the additive model without interaction term is fit to evaluate the cooccurrence/mutual exclusivity in the entire dataset. In addition to test the differential cooccurrence/mutual exclusivity, DifeCo package can also be used to evaluate and visualize pairwise gene cooccurrence/mutual exclusivity in two datasets (Separate mode) or single one dataset (Single mode). Which model to be used purely depends on the hypothesis as well as the nature of the data.
  
 
 ## Installation
@@ -24,7 +24,7 @@ MutDat_WoPTEN<-subset(MutDat_UT,select=-PTEN);head(MutDat_WoPTEN[,1:5])
 
 ```
 ## DC mode
-First step is to evaluate the differential cooccurrence/mutual exclusion of genomic alterations between the patients with wild type PTEN (PTEN-WT) and PTEN function altered (PTEN-Alt). We set up the FDR cutoff equal to 0.1. 
+First step is to evaluate the differential cooccurrence/mutual exclusivity of genomic alterations between the patients with wild type PTEN (PTEN-WT) and PTEN function altered (PTEN-Alt). We set up the FDR cutoff equal to 0.1. 
 ```{r, eval=TRUE}
   Result_DC<-DC.CO_Evaluation(input_data=MutDat_WoPTEN,
                               group=PTEN,
@@ -33,24 +33,24 @@ First step is to evaluate the differential cooccurrence/mutual exclusion of geno
                               adjust.method="BH",
                               FDRCutoff=0.1)
 ```
-The gene pairs with significantly differential cooccurrence/mutual exclusion can be extracted by Stat.Extraction function. In this study, the pair of PIK3CA and PIK3R1 shows significantly differential cooccurrence/mutual exclusion. In other word, the pattern of cooccurrence/mutual exclusion of PIK3CA and PIK3R1 depends on the group. In details, alterations in PIK3CA and PIK3RI are mutually excluded in PTEN-WT group, while they cooccur in PTEN-Alt group. For the gene pairs without significant differential cooccurrence/mutual exclusion, the pattern is evaluated in the entire dataset and 13 pairs show significant.
+The gene pairs with significantly differential cooccurrence/mutual exclusivity can be extracted by Stat.Extraction function. In this study, the pair of PIK3CA and PIK3R1 shows significantly differential cooccurrence/mutual exclusivity. In other word, the pattern of cooccurrence/mutual exclusivity of PIK3CA and PIK3R1 depends on the group. In details, alterations in PIK3CA and PIK3RI are mutually excluded in PTEN-WT group, while they cooccur in PTEN-Alt group. For the gene pairs without significant differential cooccurrence/mutual exclusivity, the pattern is evaluated in the entire dataset and 13 pairs show significant.
 ```{r, eval=TRUE}
   sta_DC<-Stat.Extraction(obj=Result_DC)
   sig_DC<-sta_DC$Stat
-#Extract the gene pairs with significant differential cooccurrence/mutual exclusion
+#Extract the gene pairs with significant differential cooccurrence/mutual exclusivity
   sig_DC[sig_DC$Sig.In.DC=="Yes",]
-#Extract the gene pairs with significant cooccurrence/mutual exclusion in UT chort dataset
+#Extract the gene pairs with significant cooccurrence/mutual exclusivity in UT chort dataset
   nrow(sig_DC[sig_DC$Sig.In.CO=="Yes",])
   head(sig_DC[sig_DC$Sig.In.CO=="Yes",])
 ```
-The following code is to visualize the result. The grid with green color shows the gene pair with significant differential cooccurrence/mutual exclusion. The cells with * are the ones with significant coocurrence/mutual exclusion for entire UT dataset.
+The following code is to visualize the result. The grid with green color shows the gene pair with significant differential cooccurrence/mutual exclusivity. The cells with * are the ones with significant coocurrence/mutual exclusivity for entire UT dataset.
 ```{r, eval=TRUE}
   DC.CO_plot(obj=sta_DC,
              label.gene.cex=0.8)
 ```
 
 ## Separate mode
-Significance of cooccurrence/mutual exclusion is evaluated in each sub dataset in "Separate" mode. This is particularly helpful to investigate the gene pair patterns in two different datasets (One dataset for discovery purpose, while the other for validation). The example below evaluates cooccurrence/mutual exclusion in UT cohort and validate the result in TCGA cohort. 
+Significance of cooccurrence/mutual exclusivity is evaluated in each sub dataset in "Separate" mode. This is particularly helpful to investigate the gene pair patterns in two different datasets (One dataset for discovery purpose, while the other for validation). The example below evaluates cooccurrence/mutual exclusivity in UT cohort and validate the result in TCGA cohort. 
 ```{r, eval=TRUE}
   Cohort=gbm_dat$cohort
   MutDat<-gbm_dat[,-1]
@@ -78,7 +78,7 @@ The result can be plotted as below.
 
 
 ## Single mode
-Assuming data from UT and TCGA cohort can be simply combined into one dataset, we analyze the cooccurrence and mutual exclusion of the combined dataset in "Single" mode.
+Assuming data from UT and TCGA cohort can be simply combined into one dataset, we analyze the cooccurrence and mutual exclusivity of the combined dataset in "Single" mode.
 ```{r, eval=TRUE}
  #Remove "cohort" column
   CombineDat<-gbm_dat[,-1]

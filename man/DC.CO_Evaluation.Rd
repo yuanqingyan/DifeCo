@@ -30,7 +30,7 @@ DC.CO_Evaluation(
 A list with odds ratio, raw p value and fasle discovery rate
 }
 \description{
-Evaluate the cooccurrence/mutual exclusion or differential cooccurrence/mutual exclusion of the gene mutation data
+Evaluate the cooccurrence/mutual exclusivity or differential cooccurrence/mutual exclusivity of the gene mutation data
 }
 \examples{
 data(gbm_dat)

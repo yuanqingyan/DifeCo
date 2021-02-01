@@ -1,6 +1,6 @@
 #' @title DC.CO_Evaluation
 #'
-#' @description Evaluate the cooccurrence/mutual exclusion or differential cooccurrence/mutual exclusion of the gene mutation data
+#' @description Evaluate the cooccurrence/mutual exclusivity or differential cooccurrence/mutual exclusivity of the gene mutation data
 #'
 #' @param input_data Dataframe or matrix of genomic alteration data (for example: gene mutation data). Should be a binary data with 0 as the wild type while 1 for altered/mutation.
 #' @param mode Which mode to be used. Three modes are included: "DC"(evaluate the significance of differential cooccurrence between two different groups),"Separate"(evaluate the pairwise cooccurrence in each group separately),"Single"(evalute the pairwise cooccurrence for the entire dataset).
